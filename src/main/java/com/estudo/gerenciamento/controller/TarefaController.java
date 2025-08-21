@@ -25,15 +25,12 @@ public class TarefaController {
 
     @Operation(description = "Realiza criação de tarefas")
     @PostMapping("/criar")
-    public ResponseEntity<?> criarTarefa(@RequestBody TarefaDTO tarefaDTO) {
+    public ResponseEntity<List<TarefaEntity>> criarTarefa(@RequestBody TarefaDTO tarefaDTO) {
         try {
-            TarefaEntity tarefa = tarefaService.criarTarefa(tarefaDTO);
+            List<TarefaEntity> tarefa = tarefaService.criarTarefa(tarefaDTO);
             return ResponseEntity.ok(tarefa);
         } catch (Exception e) {
-            ErroResponse error = new ErroResponse("Erro ao tentar criar tarefa " + e.getMessage());
-           return  ResponseEntity
-                   .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                   .body(error);
+            throw new RuntimeException("Erro ao criar tarefas");
         }
     }
     @Operation(description = "Realiza remoção de tarefas")

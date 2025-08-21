@@ -20,7 +20,11 @@ public class TarefaService {
         this.tarefaRepository = tarefaRepository;
     }
 
-    public TarefaEntity criarTarefa(TarefaDTO tarefaDTO) {
+    public List<TarefaEntity> listarTarefas(){
+        Sort sort = Sort.by("titulo").ascending().and(Sort.by("dataCriacao")).descending();
+        return tarefaRepository.findAll(sort);
+    }
+    public List<TarefaEntity> criarTarefa(TarefaDTO tarefaDTO) {
         TarefaEntity tarefa = new TarefaEntity();
 
         tarefa.setDataFinal(tarefaDTO.getDataFinal());
@@ -29,17 +33,15 @@ public class TarefaService {
         tarefa.setStatus(tarefaDTO.getStatus());
         tarefa.setDescricao(tarefaDTO.getDescricao());
         tarefa.setDataCriacao(LocalDate.now());
-        return tarefaRepository.save(tarefa);
+         tarefaRepository.save(tarefa);
+        return listarTarefas();
     }
 
     public void removerTarefa(Long id) {
         tarefaRepository.deleteById(id);
     }
 
-    public List<TarefaEntity> listarTarefas(){
-        Sort sort = Sort.by("titulo").ascending().and(Sort.by("dataCriacao")).descending();
-        return tarefaRepository.findAll(sort);
-    }
+
 
     public TarefaEntity finalizarTarefa(Long id) {
         TarefaDTO tarefaDTO = new TarefaDTO();
