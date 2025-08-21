@@ -3,6 +3,7 @@ package com.estudo.gerenciamento.service;
 import com.estudo.gerenciamento.dto.TarefaDTO;
 import com.estudo.gerenciamento.entity.TarefaEntity;
 import com.estudo.gerenciamento.repository.ITarefaRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -36,7 +37,8 @@ public class TarefaService {
     }
 
     public List<TarefaEntity> listarTarefas(){
-        return tarefaRepository.findAll();
+        Sort sort = Sort.by("titulo").ascending().and(Sort.by("dataCriacao")).descending();
+        return tarefaRepository.findAll(sort);
     }
 
     public TarefaEntity finalizarTarefa(Long id) {
