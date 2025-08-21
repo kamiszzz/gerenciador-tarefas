@@ -31,17 +31,23 @@ public class TarefaService {
         return tarefaRepository.save(tarefa);
     }
 
+    public void removerTarefa(Long id) {
+        tarefaRepository.deleteById(id);
+    }
+
     public List<TarefaEntity> listarTarefas(){
         return tarefaRepository.findAll();
     }
 
-    public void finalizarTarefa(TarefaDTO tarefaDTO) {
-        TarefaEntity tarefa = tarefaRepository.findById(tarefaDTO.getId())
+    public TarefaEntity finalizarTarefa(Long id) {
+        TarefaDTO tarefaDTO = new TarefaDTO();
+
+        TarefaEntity tarefa = tarefaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Tarefa não encontrada com ID: " + tarefaDTO.getId()));
 
-        tarefa.setStatus(tarefaDTO.getStatus());
+        tarefa.setStatus("FINALIZADA");
         tarefa.setDataFinal(LocalDate.now());
 
-        tarefaRepository.save(tarefa);
+        return tarefaRepository.save(tarefa);
     }
 }
